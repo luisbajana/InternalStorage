@@ -19,24 +19,73 @@ import {
 
 type Props = {};
 export default class App extends Component<Props> {
+
+  state = {
+    nombre: '',
+    listaNombres: []
+  }
+
+  async guardarNombre(){
+    let nombre = this.state.nombre
+   await AsyncStorage.setItem('nombres_db', nombre )
+      .then( ()=>{
+        console.log('Nombre guardado exitosamente')
+      } )
+  }
+
+  async verNombres(){
+    
+    try {
+      const value = await AsyncStorage.getItem('nombres_db');
+      const arr = []
+      if (value !== null){
+        arr.push( JSON.stringify(value) )
+        this.setState({
+          listaNombres: arr
+        })
+      }
+    } catch (error) {
+      // Error retrieving data
+    }
+  }
+
   render() {
     return (
      <View style={styles.container}>
         <View>
-        <TextInput placeholder="Guarda tu nombre" />
-        <TouchableWithoutFeedback>
-          <Text>Guardar</Text>
+        <TextInput 
+          placeholder="Guarda tu nombre"  
+          value = { this.state.nombre }
+          onChangeText = { (nombre)=>{ this.setState({ nombre: nombre }) } }
+        />
+        <TouchableWithoutFeedback onPress={()=>this.guardarNombre()}>
+          <View>
+            <Text>Guardar</Text>
+          </View>
         </TouchableWithoutFeedback>
+
+
+        <TouchableWithoutFeedback onPress={()=>this.verNombres()}>
+          <View>
+            <Text>Ver Nombres</Text>
+          </View>
+        </TouchableWithoutFeedback>
+
+        <View>
+          {
+            this.state.listaNombres.map( (value , index)=>{
+              return(
+                <View>
+                  <Text>{value}</Text>
+                </View>
+              )
+            } )
+          }
+        </View>
+
       </View>
 
-      
-        /*
-          Presentacion de datos
-        */
-      
-      <View>
-        
-      </View>
+
 
     </View>
     );
