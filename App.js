@@ -12,8 +12,10 @@ import {
   View,
   TextInput,
   AsyncStorage,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  ActivityIndicator
 } from 'react-native';
+
 
 
 
@@ -45,29 +47,31 @@ export default class App extends Component<Props> {
         })
       }
     } catch (error) {
-      // Error retrieving data
+      console.log(error)
     }
   }
 
   render() {
     return (
      <View style={styles.container}>
+
         <View>
         <TextInput 
+          style={styles.input}
           placeholder="Guarda tu nombre"  
           value = { this.state.nombre }
           onChangeText = { (nombre)=>{ this.setState({ nombre: nombre }) } }
         />
         <TouchableWithoutFeedback onPress={()=>this.guardarNombre()}>
-          <View>
-            <Text>Guardar</Text>
+          <View style={styles.boton}>
+            <Text style={styles.textoBoton}>Guardar</Text>
           </View>
         </TouchableWithoutFeedback>
 
 
         <TouchableWithoutFeedback onPress={()=>this.verNombres()}>
-          <View>
-            <Text>Ver Nombres</Text>
+          <View style={styles.boton}>
+            <Text style={styles.textoBoton}>Ver Nombres</Text>
           </View>
         </TouchableWithoutFeedback>
 
@@ -109,4 +113,24 @@ const styles = StyleSheet.create({
     color: '#333333',
     marginBottom: 5,
   },
+  input: {
+    borderWidth: 1,
+    borderColor: '#666666',
+    backgroundColor: '#FFFFFF',
+    width: 200,
+    height: 50,
+    padding: 10
+  },
+  boton: {
+    backgroundColor: '#666666',
+    borderRadius: 5,
+    height: 50,
+    marginTop: 10
+  },
+  textoBoton: {
+    color: '#FFFFFF',
+    paddingTop: 16,
+    alignSelf: 'center'
+  }
+
 });
